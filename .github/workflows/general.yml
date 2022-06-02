@@ -18,17 +18,12 @@ jobs:
           POSTGRES_DB: postgres
         ports:
           - 5432:5432
-      redis:
-        image: redis:6
-        ports:
-          - 6379:6379
     env:
       SQLX_VERSION: 0.5.7
       SQLX_FEATURES: postgres
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
       - name: Cache dependencies
         id: cache-dependencies
         uses: actions/cache@v2
@@ -38,7 +33,6 @@ jobs:
             ~/.cargo/git
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -53,7 +47,7 @@ jobs:
           path: |
             ~/.cargo/bin/sqlx
             ~/.cargo/bin/cargo-sqlx
-          key: ${{ runner.os }}-sqlx-${{ env.SQLX_VERSION }}-${{ env.SQLX_FEATURES }}
+          key: ${{ runner.os }}-sqlx-${{ env.SQLX_VERSION }}-${{ env.SQLX_FEATURES }}-2
 
       - name: Install sqlx-cli 
         uses: actions-rs/cargo@v1
@@ -119,8 +113,8 @@ jobs:
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
           components: clippy
+          toolchain: stable
           override: true
 
       - name: Cache sqlx-cli
@@ -167,10 +161,6 @@ jobs:
           POSTGRES_DB: postgres
         ports:
           - 5432:5432
-      redis:
-        image: redis:6
-        ports:
-          - 6379:6379
     env:
       SQLX_VERSION: 0.5.7
       SQLX_FEATURES: postgres

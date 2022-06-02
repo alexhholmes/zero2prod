@@ -37,4 +37,4 @@ services:
     instance_size_slug: basic-xxs
     # All incoming requests should be routed to our app
     routes:
-- path: /
+      - path: /
